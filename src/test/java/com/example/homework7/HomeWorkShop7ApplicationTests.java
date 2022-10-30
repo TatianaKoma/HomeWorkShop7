@@ -9,5 +9,4 @@ class HomeWorkShop7ApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }
