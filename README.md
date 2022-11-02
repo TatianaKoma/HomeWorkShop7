@@ -1,2 +1,2 @@
-# HomeWorkShop7
+#Online Shop
 ![example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
