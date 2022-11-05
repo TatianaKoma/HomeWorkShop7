@@ -4,11 +4,8 @@ import com.example.homeworkshop7.dto.CartCreationDto;
 import com.example.homeworkshop7.dto.CartDto;
 import com.example.homeworkshop7.dto.CartUpdateDto;
 import com.example.homeworkshop7.dto.ProductDto;
-import com.example.homeworkshop7.mapper.CartMapper;
-import com.example.homeworkshop7.mapper.ProductMapper;
-import com.example.homeworkshop7.model.Cart;
-import com.example.homeworkshop7.model.Product;
-import com.example.homeworkshop7.service.CartService;
+import com.example.homeworkshop7.facade.CartFacade;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,25 +19,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
 @Validated
+@RequiredArgsConstructor
 public class CartViewController {
 
-    @Autowired
-    private CartService cartService;
-    @Autowired
-    private CartMapper cartMapper;
-    @Autowired
-    private ProductMapper productMapper;
+    private final CartFacade cartFacade;
 
     @RequestMapping("/getCarts")
     @PreAuthorize("isAuthenticated()")
     public String getAllCarts(Model model) {
-        List<Cart> carts = cartService.getCarts();
-        List<CartDto> cartDto = carts.stream().map(cartMapper::toCartDTO).collect(Collectors.toList());
+        List<CartDto> cartDto = cartFacade.getCarts();
         model.addAttribute("cart", cartDto);
         return "getCarts";
     }
@@ -59,8 +50,7 @@ public class CartViewController {
         if (bindingResult.hasErrors()) {
             return "cartInfo";
         } else {
-            Cart cart = cartMapper.toCart(cartCreationDto);
-            cartService.createCart(cart);
+            cartFacade.createCart(cartCreationDto);
             log.info("New cart was added");
             return "redirect:/getCarts";
         }
@@ -69,8 +59,7 @@ public class CartViewController {
     @RequestMapping("/addProductToCart")
     @PreAuthorize("isAuthenticated()")
     public String updateCart(@RequestParam("cartId") int id, Model model) {
-        Cart cart = cartService.getCartById(id);
-        CartDto cartDto = cartMapper.toCartDTO(cart);
+        CartDto cartDto = cartFacade.getCartById(id);
         model.addAttribute("updatedCart", cartDto);
         log.info("Cart with id {} was updated", id);
         return "cartUpdate";
@@ -83,7 +72,7 @@ public class CartViewController {
         if (bindingResult.hasErrors()) {
             return "cartUpdate";
         } else {
-            cartService.addProductToCartById(cartUpdateDto.getId(), cartUpdateDto.getProductsId());
+            cartFacade.addProductToCartById(cartUpdateDto.getId(), cartUpdateDto.getProductsId());
             log.info("Product with id {} was added to cart", cartUpdateDto.getProductsId());
             return "redirect:/getCarts";
         }
@@ -92,8 +81,7 @@ public class CartViewController {
     @RequestMapping("/listProducts")
     @PreAuthorize("isAuthenticated()")
     public String getAllProductsFromCart(@RequestParam("cartId") int id, Model model) {
-        List<Product> productList = cartService.getListProductsByCartId(id);
-        List<ProductDto> productDtos = productList.stream().map(productMapper::toProductDTO).collect(Collectors.toList());
+        List<ProductDto> productDtos = cartFacade.getListProductsByCartId(id);
         model.addAttribute("listProducts", productDtos);
         return "getListProducts";
     }
@@ -101,7 +89,7 @@ public class CartViewController {
     @RequestMapping("/deleteCart")
     @PreAuthorize("isAuthenticated()")
     public String deleteCart(@RequestParam("cartId") int id) {
-        cartService.deleteCartById(id);
+        cartFacade.deleteCartById(id);
         log.info("Cart with id {} was deleted", id);
         return "redirect:/getCarts";
     }

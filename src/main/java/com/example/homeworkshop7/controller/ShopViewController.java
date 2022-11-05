@@ -2,11 +2,9 @@ package com.example.homeworkshop7.controller;
 
 import com.example.homeworkshop7.dto.ShopCreationDto;
 import com.example.homeworkshop7.dto.ShopDto;
-import com.example.homeworkshop7.mapper.ShopMapper;
-import com.example.homeworkshop7.model.Shop;
-import com.example.homeworkshop7.service.ShopService;
+import com.example.homeworkshop7.facade.ShopFacade;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,24 +16,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
 @Validated
+@RequiredArgsConstructor
 public class ShopViewController {
 
-    @Autowired
-    private ShopService shopService;
-    @Autowired
-    private ShopMapper mapper;
+    private final ShopFacade shopFacade;
 
     @RequestMapping("/getShops")
     @PreAuthorize("isAuthenticated()")
     public String getAllShops(Model model) {
-        List<ShopDto> shopDto = shopService.getShops().stream()
-                .map(mapper::toShopDTO)
-                .collect(Collectors.toList());
+        List<ShopDto> shopDto = shopFacade.getShops();
         model.addAttribute("shop", shopDto);
         return "getShops";
     }
@@ -54,8 +47,7 @@ public class ShopViewController {
         if (bindingResult.hasErrors()) {
             return "shopInfo";
         } else {
-            Shop shop = mapper.toShop(shopCreationDto);
-            shopService.createShop(shop);
+            shopFacade.createShop(shopCreationDto);
             log.info("Shop was created");
             return "redirect:/getShops";
         }
@@ -64,7 +56,7 @@ public class ShopViewController {
     @RequestMapping("/deleteShop")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteShop(@RequestParam("shopId") int id) {
-        shopService.deleteShopById(id);
+        shopFacade.deleteShopById(id);
         log.info("Shop with id {} was deleted", id);
         return "redirect:/getShops";
     }

@@ -2,11 +2,9 @@ package com.example.homeworkshop7.controller;
 
 import com.example.homeworkshop7.dto.ProductCreationDto;
 import com.example.homeworkshop7.dto.ProductDto;
-import com.example.homeworkshop7.mapper.ProductMapper;
-import com.example.homeworkshop7.model.Product;
-import com.example.homeworkshop7.service.ProductService;
+import com.example.homeworkshop7.facade.ProductFacade;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,23 +16,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
 @Validated
+@RequiredArgsConstructor
 public class ProductViewController {
 
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private ProductMapper mapper;
+    private final ProductFacade productFacade;
 
     @RequestMapping("/getProducts")
     @PreAuthorize("isAuthenticated()")
     public String getAllProducts(Model model) {
-        List<Product> products = productService.getProducts();
-        List<ProductDto> productsDTO = products.stream().map(mapper::toProductDTO).collect(Collectors.toList());
+        List<ProductDto> productsDTO = productFacade.getProducts();
         model.addAttribute("product", productsDTO);
         return "getProducts";
     }
@@ -53,8 +47,7 @@ public class ProductViewController {
         if (bindingResult.hasErrors()) {
             return "productInfo";
         } else {
-            Product product = mapper.toProduct(productCreationDto);
-            productService.createProduct(product);
+            productFacade.createProduct(productCreationDto);
             log.info("Product was created");
             return "redirect:/getProducts";
         }
@@ -63,8 +56,7 @@ public class ProductViewController {
     @RequestMapping("/updateProduct")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String updateProduct(@RequestParam("productId") int id, Model model) {
-        Product product = productService.getProductById(id);
-        ProductDto productDto = mapper.toProductDTO(product);
+        ProductDto productDto = productFacade.getProductById(id);
         model.addAttribute("updatedProduct", productDto);
         return "productUpdate";
     }
@@ -76,8 +68,7 @@ public class ProductViewController {
         if (bindingResult.hasErrors()) {
             return "productUpdate";
         } else {
-            Product product = mapper.toProduct(productDto);
-            productService.updateProductById(product.getId(), product);
+            productFacade.updateProductById(productDto.getProductId(), productDto);
             log.info("Product with id {} was updated", productDto.getProductId());
             return "redirect:/getProducts";
         }
@@ -86,7 +77,7 @@ public class ProductViewController {
     @RequestMapping("/deleteProduct")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteProduct(@RequestParam("productId") int id) {
-        productService.deleteProductById(id);
+        productFacade.deleteProductById(id);
         log.info("Product with id {} was deleted", id);
         return "redirect:/getProducts";
     }
