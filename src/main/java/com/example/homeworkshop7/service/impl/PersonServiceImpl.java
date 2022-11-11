@@ -54,7 +54,7 @@ public class PersonServiceImpl implements PersonService {
         return personRepository.findById(id)
                 .orElseThrow(() -> {
                     log.error("Unable to get. Person with id {} was not found", id);
-                    return new NotFoundException(String.format(PERSON_NOT_FOUND));
+                    return new NotFoundException(String.format(PERSON_NOT_FOUND, id));
                 });
     }
 
@@ -85,19 +85,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person getPersonByUsername(String username) {
-        Person person = personRepository.findPersonByUsername(username);
-        if (person == null) {
-            log.error("Person with username {} was not found", username);
-            throw new NotFoundException(String.format(PERSON_NOT_FOUND_BY_USERNAME, username));
-        } else {
-            return person;
-        }
-    }
-
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Person person = getPersonByUsername(username);
+        Person person = personRepository.findPersonByUsername(username);
         if (person == null) {
             log.error("Person with username {} was not found", username);
             throw new UsernameNotFoundException(String.format(PERSON_NOT_FOUND_BY_USERNAME, username));

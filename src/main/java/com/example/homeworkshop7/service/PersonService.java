@@ -18,7 +18,5 @@ public interface PersonService extends UserDetailsService {
 
     void deletePersonById(Integer id);
 
-    Person getPersonByUsername(String username);
-
     boolean savePerson(Person person);
 }
