@@ -28,7 +28,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class CartServiceTest {
+class CartServiceTest {
     private final Person PERSON = new Person(1, "Tom", "Ford", "tford@gmail.com",
             "tom", "123", "123", new ArrayList<>(), new HashSet<>());
     private final Cart CART = new Cart(1, PERSON, new BigDecimal(0), new ArrayList<>());

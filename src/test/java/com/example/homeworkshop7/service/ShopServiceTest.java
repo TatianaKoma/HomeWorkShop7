@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ShopServiceTest {
+class ShopServiceTest {
     private final Shop SHOP = new Shop(1, "Market", new ArrayList<>());
     @InjectMocks
     private ShopServiceImpl service;

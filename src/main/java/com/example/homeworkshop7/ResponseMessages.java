@@ -11,4 +11,7 @@ public class ResponseMessages {
     public static final String PERSON_NOT_FOUND_BY_USERNAME = "Person with username %s was not found";
     public static final String PASSWORDS_NOT_MATCH = "Passwords do not match";
     public static final String USER_EXISTS = "User with this username is already exists";
+    public static final String SUBJECT = "Registration message";
+    public static final String CONTENT = "Hello, %s. You have successfully registred." +
+            "Welcome to our online shop: <a href=\"http://localhost:8080/login\" target=\"_blank\">Log in</a>";
 }

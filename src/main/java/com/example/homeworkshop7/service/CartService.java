@@ -7,7 +7,6 @@ import com.example.homeworkshop7.model.Product;
 import java.util.List;
 
 public interface CartService {
-
     Cart createCart(Cart cart);
 
     List<Cart> getCarts();

@@ -25,8 +25,8 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class PersonServiceTest {
-    private  final Person PERSON = new Person(1, "Tom", "Ford", "tford@gmail.com",
+class PersonServiceTest {
+    private final Person PERSON = new Person(1, "Tom", "Ford", "tford@gmail.com",
             "tom", "123", "123", new ArrayList<>(), new HashSet<>());
 
     @InjectMocks

@@ -1,13 +1,11 @@
 package com.example.homeworkshop7.service;
 
-
 import com.example.homeworkshop7.model.Person;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
 public interface PersonService extends UserDetailsService {
-
     Person createPerson(Person person);
 
     Person getPersonById(Integer id);

@@ -11,12 +11,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
 
+import static com.example.homeworkshop7.ResponseMessages.CONTENT;
 import static com.example.homeworkshop7.ResponseMessages.PERSON_NOT_FOUND;
 import static com.example.homeworkshop7.ResponseMessages.PERSON_NOT_FOUND_BY_USERNAME;
+import static com.example.homeworkshop7.ResponseMessages.SUBJECT;
 
 @Slf4j
 @Service
@@ -25,6 +28,7 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final MailServiceImpl mailService;
 
     @Override
     public Person createPerson(Person person) {
@@ -33,6 +37,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional
     public boolean savePerson(Person person) {
         Person personFromDB = personRepository.findPersonByUsername(person.getUsername());
         if (personFromDB != null) {
@@ -41,6 +46,9 @@ public class PersonServiceImpl implements PersonService {
         person.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
         person.setPassword(bCryptPasswordEncoder.encode(person.getPassword()));
         personRepository.save(person);
+        if (personRepository.findById(person.getId()).isPresent()) {
+            mailService.sendRegistrationEmail(person.getEmail(), SUBJECT, person.getName(), CONTENT);
+        }
         return true;
     }
 
@@ -86,6 +94,8 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+
         Person person = personRepository.findPersonByUsername(username);
         if (person == null) {
             log.error("Person with username {} was not found", username);
