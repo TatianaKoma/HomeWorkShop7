@@ -14,7 +14,8 @@ import java.math.BigDecimal;
 public class ProductDto {
     private Integer productId;
     private String name;
-    private BigDecimal price;
+    private BigDecimal priceUah;
+    private BigDecimal priceUsd;
     private Integer shopId;
 
     @Override
@@ -22,8 +23,7 @@ public class ProductDto {
         return "{" +
                 "id=" + productId +
                 ", name='" + name + '\'' +
-                ", price=" + price +
-                ", shopId=" + shopId +
+                ", priceUah=" + priceUah +
                 '}';
     }
 }

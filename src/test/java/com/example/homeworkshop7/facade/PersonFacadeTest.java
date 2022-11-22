@@ -85,9 +85,9 @@ class PersonFacadeTest {
 
         when(personMapper.toPerson(personDtoForUpdate)).thenReturn(updatedPerson);
         when(personMapper.toPersonDTO(updatedPerson)).thenReturn(expectedPersonDto);
-        when(personService.updatePersonById(updatedPerson.getId(),updatedPerson)).thenReturn(updatedPerson);
-        PersonDto actualUpdatedPersonDto = personFacade.updatePersonById(updatedPerson.getId(),personDtoForUpdate);
-        assertEquals(expectedPersonDto,actualUpdatedPersonDto);
+        when(personService.updatePersonById(updatedPerson.getId(), updatedPerson)).thenReturn(updatedPerson);
+        PersonDto actualUpdatedPersonDto = personFacade.updatePersonById(updatedPerson.getId(), personDtoForUpdate);
+        assertEquals(expectedPersonDto, actualUpdatedPersonDto);
     }
 
     @Test

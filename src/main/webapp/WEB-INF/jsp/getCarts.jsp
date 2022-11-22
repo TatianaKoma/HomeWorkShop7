@@ -15,7 +15,8 @@
         <tr>
             <th>ID</th>
             <th>PersonId</th>
-            <th>Sum</th>
+            <th>SumUAH</th>
+            <th>SumUSD</th>
             <th>Operations</th>
         </tr>
         <c:forEach var="cart" items="${cart}">
@@ -35,7 +36,9 @@
             <tr>
                 <td>${cart.id}</td>
                 <td>${cart.personId}</td>
-                <td>${cart.sum}</td>
+                <td>${cart.sumUah}</td>
+                <td>${cart.sumUsd}</td>
+
                 <td>
                     <input type="button" value="ListProducts"
                            onclick="window.location.href='${productButton}'"/>

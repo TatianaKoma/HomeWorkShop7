@@ -14,7 +14,8 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Price</th>
+            <th>PriceUAH</th>
+            <th>PriceUSD</th>
             <th>ShopId</th>
             <th>Operations</th>
         </tr>
@@ -30,7 +31,8 @@
             <tr>
                 <td>${product.productId}</td>
                 <td>${product.name}</td>
-                <td>${product.price}</td>
+                <td>${product.priceUah}</td>
+                <td>${product.priceUsd}</td>
                 <td>${product.shopId}</td>
                 <td>
                     <input type="button" value="Update"

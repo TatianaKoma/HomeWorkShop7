@@ -6,7 +6,6 @@ import com.example.homeworkshop7.dto.PersonDto;
 import java.util.List;
 
 public interface PersonFacade {
-
     PersonDto createPerson(PersonCreationDto personCreationDto);
 
     PersonDto getPersonById(Integer id);

@@ -1,7 +1,6 @@
 package com.example.homeworkshop7.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,10 +12,10 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class CartDto {
     private Integer id;
     private Integer personId;
-    private BigDecimal sum;
+    private BigDecimal sumUah;
+    private BigDecimal sumUsd;
     private List<Integer> productsId;
 }

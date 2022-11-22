@@ -6,7 +6,6 @@ import com.example.homeworkshop7.facade.impl.ShopFacadeImpl;
 import com.example.homeworkshop7.mapper.ShopMapper;
 import com.example.homeworkshop7.model.Cart;
 import com.example.homeworkshop7.model.Person;
-import com.example.homeworkshop7.model.Product;
 import com.example.homeworkshop7.model.Shop;
 import com.example.homeworkshop7.service.ShopService;
 import org.junit.jupiter.api.BeforeEach;

@@ -19,7 +19,7 @@ public class ProductMapper {
     public Product toProduct(ProductCreationDto productCreationDTO) {
         Product product = new Product();
         product.setName(productCreationDTO.getName());
-        product.setPrice(productCreationDTO.getPrice());
+        product.setPrice(productCreationDTO.getPriceUah());
         Shop shop = shopRepository.findById(productCreationDTO.getShopId())
                 .orElseThrow(() -> new NotFoundException(String.format(SHOP_NOT_FOUND,
                         productCreationDTO.getShopId())));
@@ -31,7 +31,7 @@ public class ProductMapper {
         Product product = new Product();
         product.setId(productDTO.getProductId());
         product.setName(productDTO.getName());
-        product.setPrice(productDTO.getPrice());
+        product.setPrice(productDTO.getPriceUah());
         Shop shop = shopRepository.findById(productDTO.getShopId())
                 .orElseThrow(() -> new NotFoundException(String.format(SHOP_NOT_FOUND,
                         productDTO.getShopId())));
@@ -40,7 +40,11 @@ public class ProductMapper {
     }
 
     public ProductDto toProductDTO(Product product) {
-        return new ProductDto(product.getId(), product.getName(),
-                product.getPrice(), product.getShop().getId());
+        ProductDto productDto = new ProductDto();
+        productDto.setProductId(product.getId());
+        productDto.setName(product.getName());
+        productDto.setPriceUah(product.getPrice());
+        productDto.setShopId(product.getShop().getId());
+        return productDto;
     }
 }

@@ -5,6 +5,7 @@ import com.example.homeworkshop7.dto.ShopDto;
 import com.example.homeworkshop7.model.Shop;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import java.util.stream.Collectors;
 
 @Component

@@ -7,7 +7,6 @@ import com.example.homeworkshop7.dto.ProductDto;
 import java.util.List;
 
 public interface CartFacade {
-
     CartDto createCart(CartCreationDto cartCreationDto);
 
     List<CartDto> getCarts();

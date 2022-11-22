@@ -4,6 +4,7 @@ import com.example.homeworkshop7.dto.ProductCreationDto;
 import com.example.homeworkshop7.dto.ProductDto;
 import com.example.homeworkshop7.facade.ProductFacade;
 import com.example.homeworkshop7.mapper.ProductMapper;
+import com.example.homeworkshop7.mapper.UahToUsdMapper;
 import com.example.homeworkshop7.model.Product;
 import com.example.homeworkshop7.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -18,27 +19,33 @@ public class ProductFacadeImpl implements ProductFacade {
 
     private final ProductService productService;
     private final ProductMapper productMapper;
+    private final UahToUsdMapper uahToUsdMapper;
 
     @Override
     public ProductDto createProduct(ProductCreationDto productCreationDto) {
         Product product = productMapper.toProduct(productCreationDto);
         Product createdProduct = productService.createProduct(product);
-        return productMapper.toProductDTO(createdProduct);
+        ProductDto productDto = productMapper.toProductDTO(createdProduct);
+        productDto.setPriceUsd(uahToUsdMapper.getUsdValue(productCreationDto.getPriceUah()));
+        return productDto;
     }
 
     @Override
     public List<ProductDto> getProducts() {
         List<Product> products = productService.getProducts();
-        List<ProductDto> productsDTO = products.stream()
+        List<ProductDto> productDtos = products.stream()
                 .map(productMapper::toProductDTO)
                 .collect(Collectors.toList());
-        return productsDTO;
+        productDtos.forEach(productDto -> productDto.setPriceUsd(uahToUsdMapper.getUsdValue(productDto.getPriceUah())));
+        return productDtos;
     }
 
     @Override
     public ProductDto getProductById(Integer id) {
         Product product = productService.getProductById(id);
-        return productMapper.toProductDTO(product);
+        ProductDto productDto = productMapper.toProductDTO(product);
+        productDto.setPriceUsd(uahToUsdMapper.getUsdValue(product.getPrice()));
+        return productDto;
     }
 
     @Override

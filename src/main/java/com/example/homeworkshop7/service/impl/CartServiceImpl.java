@@ -37,7 +37,7 @@ public class CartServiceImpl implements CartService {
                     log.error("Person with id {} was not found", cart.getPerson().getId());
                     return new NotFoundException(String.format(PERSON_NOT_FOUND, cart.getPerson().getId()));
                 });
-        log.debug("Get cart {}",cart);
+        log.debug("Get cart {}", cart);
         if (Objects.equals(person.getId(), cart.getPerson().getId())) {
             cart.setSum(new BigDecimal(0));
             cartRepository.save(cart);

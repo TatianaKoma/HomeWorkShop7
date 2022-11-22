@@ -14,8 +14,8 @@
     Name <form:input path="name"/>
     <form:errors path="name"/>
     <br><br>
-    Price <form:input path="price"/>
-    <form:errors path="price"/>
+    Price <form:input path="priceUah"/>
+    <form:errors path="priceUah"/>
     <br><br>
     ShopID <form:input path="shopId"/>
     <form:errors path="shopId"/>

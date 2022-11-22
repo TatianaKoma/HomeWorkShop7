@@ -6,7 +6,6 @@ import com.example.homeworkshop7.dto.ProductDto;
 import java.util.List;
 
 public interface ProductFacade {
-
     ProductDto createProduct(ProductCreationDto productCreationDto);
 
     List<ProductDto> getProducts();

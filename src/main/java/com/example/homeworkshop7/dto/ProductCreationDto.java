@@ -16,14 +16,13 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductCreationDto {
-
     @NotBlank(message = "Name cannot be null")
     @Size(min = 2, max = 255, message = "Name must have at least 2 characters")
     private String name;
 
     @NotNull(message = "Price cannot be null")
     @PositiveOrZero(message = "Price cannot be negative")
-    private BigDecimal price;
+    private BigDecimal priceUah;
 
     @NotNull(message = "ShopId cannot be null")
     @PositiveOrZero(message = "ShopId cannot be negative")

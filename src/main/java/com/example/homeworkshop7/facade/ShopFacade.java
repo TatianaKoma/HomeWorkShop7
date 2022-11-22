@@ -6,7 +6,6 @@ import com.example.homeworkshop7.dto.ShopDto;
 import java.util.List;
 
 public interface ShopFacade {
-
     ShopDto createShop(ShopCreationDto shopCreationDto);
 
     List<ShopDto> getShops();

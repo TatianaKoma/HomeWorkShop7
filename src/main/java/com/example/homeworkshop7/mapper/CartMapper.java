@@ -1,4 +1,5 @@
 package com.example.homeworkshop7.mapper;
+
 import com.example.homeworkshop7.dto.CartCreationDto;
 import com.example.homeworkshop7.dto.CartDto;
 import com.example.homeworkshop7.exception.NotFoundException;
@@ -32,6 +33,11 @@ public class CartMapper {
         List<Integer> productsId = cart.getProducts().stream()
                 .map(Product::getId)
                 .collect(Collectors.toList());
-        return new CartDto(cart.getId(), cart.getPerson().getId(), cart.getSum(), productsId);
+        CartDto cartDto = new CartDto();
+        cartDto.setId(cart.getId());
+        cartDto.setPersonId(cart.getPerson().getId());
+        cartDto.setSumUah(cart.getSum());
+        cartDto.setProductsId(productsId);
+        return cartDto;
     }
 }

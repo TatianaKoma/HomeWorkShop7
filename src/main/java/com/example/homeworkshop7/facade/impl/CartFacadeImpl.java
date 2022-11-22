@@ -6,6 +6,7 @@ import com.example.homeworkshop7.dto.ProductDto;
 import com.example.homeworkshop7.facade.CartFacade;
 import com.example.homeworkshop7.mapper.CartMapper;
 import com.example.homeworkshop7.mapper.ProductMapper;
+import com.example.homeworkshop7.mapper.UahToUsdMapper;
 import com.example.homeworkshop7.model.Cart;
 import com.example.homeworkshop7.model.Product;
 import com.example.homeworkshop7.service.CartService;
@@ -22,6 +23,7 @@ public class CartFacadeImpl implements CartFacade {
     private final CartService cartService;
     private final CartMapper cartMapper;
     private final ProductMapper productMapper;
+    private final UahToUsdMapper uahToUsdMapper;
 
     @Override
     public CartDto createCart(CartCreationDto cartCreationDto) {
@@ -33,19 +35,27 @@ public class CartFacadeImpl implements CartFacade {
     @Override
     public List<CartDto> getCarts() {
         List<Cart> carts = cartService.getCarts();
-        return carts.stream().map(cartMapper::toCartDTO).collect(Collectors.toList());
+        List<CartDto> cartDtos = carts.stream()
+                .map(cartMapper::toCartDTO)
+                .collect(Collectors.toList());
+        cartDtos.forEach(cartDto -> cartDto.setSumUsd(uahToUsdMapper.getUsdValue(cartDto.getSumUah())));
+        return cartDtos;
     }
 
     @Override
     public CartDto getCartById(Integer id) {
         Cart cart = cartService.getCartById(id);
-        return cartMapper.toCartDTO(cart);
+        CartDto cartDto = cartMapper.toCartDTO(cart);
+        cartDto.setSumUsd(uahToUsdMapper.getUsdValue(cart.getSum()));
+        return cartDto;
     }
 
     @Override
     public CartDto addProductToCartById(Integer id, Integer productId) {
         Cart cart = cartService.addProductToCartById(id, productId);
-        return cartMapper.toCartDTO(cart);
+        CartDto cartDto = cartMapper.toCartDTO(cart);
+        cartDto.setSumUsd(uahToUsdMapper.getUsdValue(cart.getSum()));
+        return cartDto;
     }
 
     @Override
@@ -54,6 +64,7 @@ public class CartFacadeImpl implements CartFacade {
         List<ProductDto> productDtos = productList.stream()
                 .map(productMapper::toProductDTO)
                 .collect(Collectors.toList());
+        productDtos.forEach(productDto -> productDto.setPriceUsd(uahToUsdMapper.getUsdValue(productDto.getPriceUah())));
         return productDtos;
     }
 
